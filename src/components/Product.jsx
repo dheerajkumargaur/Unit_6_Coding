@@ -1,41 +1,56 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { asc, desc, getall } from "../redux/Action";
+import "./Products.css";
 
 export const Product = () => {
   const [data, setData] = useState([]);
+  let searchData = useSelector((store) => store.data);
+
+  const dispatch = useDispatch();
+
+  // searchData =
+
   useEffect(() => {
     getData();
   }, []);
+
   const getData = () => {
     axios
       .get("https://movie-fake-server.herokuapp.com/products")
-      .then((res) => {
-        setData(res.data);
+      .then(({ data }) => {
+        setData(data);
+        dispatch(getall(data));
       });
-  };
-  const lowToHigh = () => {
-    var arr = [...data];
-    arr.sort((a, b) => a.price - b.price);
-    setData(arr);
-  };
-  const highToLow = () => {
-    var arr = [...data];
-    arr.sort((a, b) => b.price - a.price);
-    setData(arr);
   };
 
   return (
     <>
-      <button onClick={lowToHigh}>Low To High</button>
-      <button onClick={highToLow}>High To Low</button>
+      <button
+        onClick={() => {
+          dispatch(asc(true));
+        }}
+      >
+        Low to High
+      </button>
+      <button
+        onClick={() => {
+          dispatch(desc(true));
+        }}
+      >
+        High to Low
+      </button>
+
       <div className="page">
-        {data.map((e, i) => (
+        {searchData.map((e, i) => (
           <Link to={`/products/${e.id}`} className="card" key={e.id}>
             <img src={e.image} alt="" />
-            <h3>Brand : {e.title}</h3>
-            <p>Category : {e.brand}</p>
-            <p>Price : {e.category}</p>
+            <h3>{e.title}</h3>
+            <p>Brand : {e.brand}</p>
+            <p>category : {e.category}</p>
+            <p> Price : $ {e.price}</p>
           </Link>
         ))}
       </div>

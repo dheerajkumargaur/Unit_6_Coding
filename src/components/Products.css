@@ -1,0 +1,28 @@
+.parent {
+    width: 250px;
+    margin: auto;
+    margin-top: 5px;
+    /* margin-bottom: 5px; */
+    font-size: 15px;
+}
+
+.child {
+    text-decoration: none;
+}
+
+.card {
+    border: 2px solid #cecece;
+    text-decoration: none;
+
+}
+
+.card>p {
+    color: black;
+}
+
+.page {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 5px;
+}
